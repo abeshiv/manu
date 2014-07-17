@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Manu.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ManuStoreContainer">
+    <EntitySet Name="Clients1" EntityType="Manu.Store.Clients1" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Orders" EntityType="Manu.Store.Orders" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Parts" EntityType="Manu.Store.Parts" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="OrderPart" Association="Manu.Store.OrderPart">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="Part" EntitySet="Parts" />
+    </AssociationSet>
+    <AssociationSet Name="ClientOrder" Association="Manu.Store.ClientOrder">
+      <End Role="Client" EntitySet="Clients1" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Clients1">
+    <Key>
+      <PropertyRef Name="ClientID" />
+    </Key>
+    <Property Name="ClientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Contact" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="OrderContents" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Client_ClientID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Parts">
+    <Key>
+      <PropertyRef Name="PartID" />
+    </Key>
+    <Property Name="PartID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PartDescription" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Order_OrderID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="OrderPart">
+    <End Role="Order" Type="Manu.Store.Orders" Multiplicity="1" />
+    <End Role="Part" Type="Manu.Store.Parts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="OrderID" />
+      </Principal>
+      <Dependent Role="Part">
+        <PropertyRef Name="Order_OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientOrder">
+    <End Role="Client" Type="Manu.Store.Clients1" Multiplicity="1" />
+    <End Role="Order" Type="Manu.Store.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="ClientID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="Client_ClientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Manu" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ManuContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients1" EntityType="Manu.Client" />
+          <EntitySet Name="Orders" EntityType="Manu.Order" />
+          <EntitySet Name="Parts" EntityType="Manu.Part" />
+          <AssociationSet Name="OrderPart" Association="Manu.OrderPart">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Part" EntitySet="Parts" />
+          </AssociationSet>
+          <AssociationSet Name="ClientOrder" Association="Manu.ClientOrder">
+            <End Role="Client" EntitySet="Clients1" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Contact" Type="String" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Manu.ClientOrder" FromRole="Client" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="OrderContents" Type="String" Nullable="false" />
+          <NavigationProperty Name="Parts" Relationship="Manu.OrderPart" FromRole="Order" ToRole="Part" />
+          <NavigationProperty Name="Client" Relationship="Manu.ClientOrder" FromRole="Order" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="Part">
+          <Key>
+            <PropertyRef Name="PartID" />
+          </Key>
+          <Property Name="PartID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartDescription" Type="String" Nullable="false" />
+          <NavigationProperty Name="Order" Relationship="Manu.OrderPart" FromRole="Part" ToRole="Order" />
+        </EntityType>
+        <Association Name="OrderPart">
+          <End Type="Manu.Order" Role="Order" Multiplicity="1" />
+          <End Type="Manu.Part" Role="Part" Multiplicity="*" />
+        </Association>
+        <Association Name="ClientOrder">
+          <End Type="Manu.Client" Role="Client" Multiplicity="1" />
+          <End Type="Manu.Order" Role="Order" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ManuStoreContainer" CdmEntityContainer="ManuContainer">
+    <EntitySetMapping Name="Clients1">
+      <EntityTypeMapping TypeName="IsTypeOf(Manu.Client)">
+        <MappingFragment StoreEntitySet="Clients1">
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="IsTypeOf(Manu.Order)">
+        <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="OrderContents" ColumnName="OrderContents" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Parts">
+      <EntityTypeMapping TypeName="IsTypeOf(Manu.Part)">
+        <MappingFragment StoreEntitySet="Parts">
+          <ScalarProperty Name="PartID" ColumnName="PartID" />
+          <ScalarProperty Name="PartDescription" ColumnName="PartDescription" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="OrderPart" TypeName="Manu.OrderPart" StoreEntitySet="Parts">
+      <EndProperty Name="Order">
+        <ScalarProperty Name="OrderID" ColumnName="Order_OrderID" />
+      </EndProperty>
+      <EndProperty Name="Part">
+        <ScalarProperty Name="PartID" ColumnName="PartID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ClientOrder" TypeName="Manu.ClientOrder" StoreEntitySet="Orders">
+      <EndProperty Name="Client">
+        <ScalarProperty Name="ClientID" ColumnName="Client_ClientID" />
+      </EndProperty>
+      <EndProperty Name="Order">
+        <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
