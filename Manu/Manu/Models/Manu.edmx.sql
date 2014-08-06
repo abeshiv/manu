@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/17/2014 15:15:25
+-- Date Created: 07/18/2014 11:57:37
 -- Generated from EDMX file: C:\Users\Home-HP\Documents\GitHub\manu\Manu\Manu\Models\Manu.edmx
 -- --------------------------------------------------
 
@@ -17,11 +17,26 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[FK_ClientOrder]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Orders] DROP CONSTRAINT [FK_ClientOrder];
+GO
+IF OBJECT_ID(N'[dbo].[FK_OrderPart]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parts] DROP CONSTRAINT [FK_OrderPart];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[Clients1]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Clients1];
+GO
+IF OBJECT_ID(N'[dbo].[Orders]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Orders];
+GO
+IF OBJECT_ID(N'[dbo].[Parts]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Parts];
+GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -40,6 +55,7 @@ CREATE TABLE [dbo].[Orders] (
     [OrderID] int IDENTITY(1,1) NOT NULL,
     [Date] datetime  NOT NULL,
     [OrderContents] nvarchar(max)  NOT NULL,
+    [ClientID] int  NOT NULL,
     [Client_ClientID] int  NOT NULL
 );
 GO

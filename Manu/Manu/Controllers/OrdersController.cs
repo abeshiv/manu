@@ -46,7 +46,7 @@ namespace Manu.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OrderID,Date,OrderContents")] Order order)
+        public ActionResult Create([Bind(Include = "OrderID,Date,OrderContents,ClientID")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace Manu.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrderID,Date,OrderContents")] Order order)
+        public ActionResult Edit([Bind(Include = "OrderID,Date,OrderContents,ClientID")] Order order)
         {
             if (ModelState.IsValid)
             {

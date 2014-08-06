@@ -22,6 +22,7 @@ namespace Manu.Models
         public int OrderID { get; set; }
         public System.DateTime Date { get; set; }
         public string OrderContents { get; set; }
+        public int ClientID { get; set; }
     
         public virtual ICollection<Part> Parts { get; set; }
         public virtual Client Client { get; set; }

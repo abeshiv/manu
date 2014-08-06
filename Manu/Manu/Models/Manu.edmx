@@ -33,6 +33,7 @@
     <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="OrderContents" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ClientID" Type="int" Nullable="false" />
     <Property Name="Client_ClientID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Parts">
@@ -89,8 +90,8 @@
             <PropertyRef Name="ClientID" />
           </Key>
           <Property Name="ClientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" />
-          <Property Name="Contact" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Contact" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Orders" Relationship="Manu.ClientOrder" FromRole="Client" ToRole="Order" />
         </EntityType>
         <EntityType Name="Order">
@@ -98,17 +99,18 @@
             <PropertyRef Name="OrderID" />
           </Key>
           <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Date" Type="DateTime" Nullable="false" />
-          <Property Name="OrderContents" Type="String" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OrderContents" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Parts" Relationship="Manu.OrderPart" FromRole="Order" ToRole="Part" />
           <NavigationProperty Name="Client" Relationship="Manu.ClientOrder" FromRole="Order" ToRole="Client" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Part">
           <Key>
             <PropertyRef Name="PartID" />
           </Key>
           <Property Name="PartID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PartDescription" Type="String" Nullable="false" />
+          <Property Name="PartDescription" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Order" Relationship="Manu.OrderPart" FromRole="Part" ToRole="Order" />
         </EntityType>
         <Association Name="OrderPart">
@@ -140,6 +142,7 @@
           <ScalarProperty Name="OrderID" ColumnName="OrderID" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="OrderContents" ColumnName="OrderContents" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -183,6 +186,7 @@
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
         <DesignerProperty Name="UseLegacyProvider" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
       </DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
